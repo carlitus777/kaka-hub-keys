@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KAKA HUB V4 - Key System</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            text-align: center;
+            max-width: 500px;
+            width: 100%;
+            animation: slideIn 0.5s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        h1 {
+            color: #667eea;
+            margin-bottom: 10px;
+            font-size: 32px;
+        }
+
+        .subtitle {
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 16px;
+        }
+
+        .success-icon {
+            font-size: 60px;
+            margin-bottom: 20px;
+            animation: bounce 1s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .key-box {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            padding: 25px;
+            border-radius: 15px;
+            margin: 25px 0;
+            font-size: 20px;
+            font-weight: bold;
+            color: white;
+            word-break: break-all;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .key-box::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent);
+            animation: shine 3s infinite;
+        }
+
+        @keyframes shine {
+            0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+            100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+        }
+
+        .copy-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 15px 50px;
+            border-radius: 50px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .copy-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.6);
+        }
+
+        .copy-btn:active {
+            transform: scale(0.95);
+        }
+
+        .info-box {
+            margin-top: 30px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            color: #666;
+            font-size: 14px;
+            line-height: 1.8;
+        }
+
+        .info-box strong {
+            color: #667eea;
+        }
+
+        .discord-link {
+            display: inline-block;
+            margin-top: 15px;
+            padding: 10px 30px;
+            background: #5865F2;
+            color: white;
+            text-decoration: none;
+            border-radius: 25px;
+            transition: 0.3s;
+        }
+
+        .discord-link:hover {
+            background: #4752C4;
+            transform: scale(1.05);
+        }
+
+        .copied-notification {
+            display: none;
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #10b981;
+            color: white;
+            padding: 15px 30px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(16, 185, 129, 0.4);
+            animation: slideInRight 0.3s ease-out;
+        }
+
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(100px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .copied-notification.show {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="success-icon">🎉</div>
+        <h1>🔥 KAKA HUB V4</h1>
+        <p class="subtitle">Sua key foi gerada com sucesso!</p>
+        
+        <div class="key-box" id="keyDisplay">Gerando key...</div>
+        
+        <button class="copy-btn" onclick="copyKey()">
+            📋 COPIAR KEY
+        </button>
+        
+        <div class="info-box">
+            <strong>⏰ Validade:</strong> 24 horas<br>
+            <strong>📝 Como usar:</strong><br>
+            1. Copie a key acima<br>
+            2. Execute o script no Roblox<br>
+            3. Use 3 dedos na tela<br>
+            4. Cole a key e clique em "Verificar"<br>
+            <br>
+            <strong>💬 Precisa de ajuda?</strong><br>
+            <a href="https://discord.gg/uPU8Xwa64c" class="discord-link" target="_blank">
+                💬 Entrar no Discord
+            </a>
+        </div>
+    </div>
+
+    <div class="copied-notification" id="notification">
+        ✅ Key copiada com sucesso!
+    </div>
+
+    <script>
+        // Função para gerar key única
+        function generateKey() {
+            const now = new Date();
+            const day = String(now.getDate()).padStart(2, '0');
+            const month = String(now.getMonth() + 1).padStart(2, '0');
+            const year = now.getFullYear();
+            const timestamp = Date.now();
+            const random = Math.random().toString(36).substring(2, 8).toUpperCase();
+            
+            return `KAKA-${day}${month}${year}-${random}`;
+        }
+
+        // Gerar e mostrar a key
+        const generatedKey = generateKey();
+        document.getElementById('keyDisplay').textContent = generatedKey;
+
+        // Salvar key com timestamp para expiração
+        const keyData = {
+            key: generatedKey,
+            timestamp: Date.now(),
+            expiresAt: Date.now() + (24 * 60 * 60 * 1000) // 24 horas
+        };
+        localStorage.setItem('kakaHubKey', JSON.stringify(keyData));
+
+        // Função para copiar key
+        function copyKey() {
+            // Copiar para clipboard
+            navigator.clipboard.writeText(generatedKey).then(() => {
+                // Mostrar notificação
+                const notification = document.getElementById('notification');
+                notification.classList.add('show');
+                
+                // Esconder após 3 segundos
+                setTimeout(() => {
+                    notification.classList.remove('show');
+                }, 3000);
+                
+                // Mudar texto do botão temporariamente
+                const btn = document.querySelector('.copy-btn');
+                const originalText = btn.textContent;
+                btn.textContent = '✅ COPIADO!';
+                btn.style.background = 'linear-gradient(135deg, #10b981 0%, #059669 100%)';
+                
+                setTimeout(() => {
+                    btn.textContent = originalText;
+                    btn.style.background = 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)';
+                }, 2000);
+            }).catch(() => {
+                // Fallback para navegadores antigos
+                const textarea = document.createElement('textarea');
+                textarea.value = generatedKey;
+                textarea.style.position = 'fixed';
+                textarea.style.opacity = '0';
+                document.body.appendChild(textarea);
+                textarea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textarea);
+                alert('✅ Key copiada! Cole no script do Roblox.');
+            });
+        }
+
+        // Log para debug
+        console.log('%c🔥 KAKA HUB V4', 'color: #667eea; font-size: 20px; font-weight: bold;');
+        console.log('%cKey gerada:', 'color: #10b981; font-weight: bold;', generatedKey);
+        console.log('%cExpira em: 24 horas', 'color: #f59e0b;');
+    </script>
+</body>
+</html>
